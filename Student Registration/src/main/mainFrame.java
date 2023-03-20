@@ -28,6 +28,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.JComboBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
 
 public class mainFrame extends JFrame {
 
@@ -252,10 +253,6 @@ public class mainFrame extends JFrame {
 		btnAddStudent.setBounds(10, 468, 89, 23);
 		registrationPanel.add(btnAddStudent);
 		
-		JButton btnDeleteStudent = new JButton("Delete");
-		btnDeleteStudent.setBounds(136, 468, 89, 23);
-		registrationPanel.add(btnDeleteStudent);
-		
 		JButton btnEditStudent = new JButton("Edit");
 		btnEditStudent.setBounds(260, 468, 89, 23);
 		registrationPanel.add(btnEditStudent);
@@ -272,7 +269,7 @@ public class mainFrame extends JFrame {
 		lblStudentId.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		tfStudentID = new JTextField();
-		tfStudentID.setBounds(106, 10, 223, 20);
+		tfStudentID.setBounds(106, 10, 165, 20);
 		panel.add(tfStudentID);
 		tfStudentID.setColumns(10);
 		lblStudentId.setLabelFor(tfStudentID);
@@ -326,6 +323,12 @@ public class mainFrame extends JFrame {
 		JButton btnShowAll = new JButton("Show All");
 		btnShowAll.setBounds(1112, 92, 89, 23);
 		contentPane.add(btnShowAll);
+		
+		JButton btnDeleteStudent = new JButton();
+		btnDeleteStudent.setIcon(new ImageIcon(mainFrame.class.getResource("/icons/bin.png")));
+		btnDeleteStudent.setBounds(706, 21, 154, 62);
+		contentPane.add(btnDeleteStudent);
+		btnDeleteStudent.setSelectedIcon(null);
 		table.getColumnModel().getColumn(0).setPreferredWidth(131);
 		
 		btnShowAll.addActionListener(new ActionListener() {
