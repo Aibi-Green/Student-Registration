@@ -250,11 +250,11 @@ public class mainFrame extends JFrame {
 		tfContactNumber.setText("");
 		
 		JButton btnAddStudent = new JButton("Add");
-		btnAddStudent.setBounds(10, 468, 89, 23);
+		btnAddStudent.setBounds(68, 469, 89, 23);
 		registrationPanel.add(btnAddStudent);
 		
 		JButton btnEditStudent = new JButton("Edit");
-		btnEditStudent.setBounds(260, 468, 89, 23);
+		btnEditStudent.setBounds(201, 469, 89, 23);
 		registrationPanel.add(btnEditStudent);
 		
 		JPanel panel = new JPanel();
@@ -269,10 +269,16 @@ public class mainFrame extends JFrame {
 		lblStudentId.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		tfStudentID = new JTextField();
-		tfStudentID.setBounds(106, 10, 165, 20);
+		tfStudentID.setBounds(106, 10, 150, 20);
 		panel.add(tfStudentID);
 		tfStudentID.setColumns(10);
 		lblStudentId.setLabelFor(tfStudentID);
+		
+		JButton btnDeleteStudent = new JButton();
+		btnDeleteStudent.setBounds(266, 9, 63, 23);
+		panel.add(btnDeleteStudent);
+		btnDeleteStudent.setText("delete");
+		btnDeleteStudent.setIcon(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(379, 126, 822, 391);
@@ -323,12 +329,6 @@ public class mainFrame extends JFrame {
 		JButton btnShowAll = new JButton("Show All");
 		btnShowAll.setBounds(1112, 92, 89, 23);
 		contentPane.add(btnShowAll);
-		
-		JButton btnDeleteStudent = new JButton();
-		btnDeleteStudent.setIcon(new ImageIcon(mainFrame.class.getResource("/icons/bin.png")));
-		btnDeleteStudent.setBounds(706, 21, 154, 62);
-		contentPane.add(btnDeleteStudent);
-		btnDeleteStudent.setSelectedIcon(null);
 		table.getColumnModel().getColumn(0).setPreferredWidth(131);
 		
 		btnShowAll.addActionListener(new ActionListener() {
