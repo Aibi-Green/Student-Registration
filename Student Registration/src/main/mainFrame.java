@@ -250,11 +250,11 @@ public class mainFrame extends JFrame {
 		tfContactNumber.setText("");
 		
 		JButton btnAddStudent = new JButton("Add");
-		btnAddStudent.setBounds(68, 469, 89, 23);
+		btnAddStudent.setBounds(10, 468, 89, 23);
 		registrationPanel.add(btnAddStudent);
 		
 		JButton btnEditStudent = new JButton("Edit");
-		btnEditStudent.setBounds(201, 469, 89, 23);
+		btnEditStudent.setBounds(141, 468, 89, 23);
 		registrationPanel.add(btnEditStudent);
 		
 		JPanel panel = new JPanel();
@@ -279,6 +279,10 @@ public class mainFrame extends JFrame {
 		panel.add(btnDeleteStudent);
 		btnDeleteStudent.setText("delete");
 		btnDeleteStudent.setIcon(null);
+		
+		JButton btnClear = new JButton("Clear");
+		btnClear.setBounds(260, 468, 89, 23);
+		registrationPanel.add(btnClear);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(379, 126, 822, 391);
@@ -517,18 +521,36 @@ public class mainFrame extends JFrame {
 							tfContactNumber.getText()
 							);
 					JOptionPane.showMessageDialog(contentPane, "Successfully edited student record("+tfStudentID.getText()+")");
-					Utilities.clearTextFields(
-							tfStudentID, 
-							tfFirstName, 
-							tfMiddleName, 
-							tfLastName, 
-							cbYear, cbMonth, cbDay, 
-							rdbtnMale, 
-							tfEmail, 
-							tfContactNumber);
 					btnShowAll.doClick();
 				}
+			}
+		});
+		
+		btnDeleteStudent.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				sqlConnect.deleteStudentRecord(tfStudentID.getText());
+				JOptionPane.showMessageDialog(contentPane, "Successfully deleted student record("+tfStudentID.getText()+")");
+				btnShowAll.doClick();
+			}
+			
+		});
+		
+		btnClear.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				
+				Utilities.clearTextFields(
+						tfStudentID, 
+						tfFirstName, 
+						tfMiddleName, 
+						tfLastName, 
+						cbYear, cbMonth, cbDay, 
+						rdbtnMale, 
+						tfEmail, 
+						tfContactNumber);
 				
 			}
 			

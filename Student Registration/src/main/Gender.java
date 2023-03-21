@@ -9,7 +9,4 @@ public class Gender {
 		else  
 			return female.getText();
 	}
-	
-//	public static void main(String[] args) {
-//	}
 }

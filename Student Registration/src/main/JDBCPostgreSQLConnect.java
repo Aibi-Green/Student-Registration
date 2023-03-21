@@ -13,36 +13,43 @@ import java.util.ArrayList;
  */
 
 public class JDBCPostgreSQLConnect {
-	// url, name, password
 	
-	private final String url = "jdbc:postgresql://localhost/postgres";
-	private final String user = "postgres";
-	private final String password = "893248";
+	private static final String url = "jdbc:postgresql://localhost/postgres";
+	private static final String user = "postgres";
+	private static final String pass = "893248";
+	private static Connection connection;
 	
-	public Connection connect() {
-		System.out.println("Trying to make a Connection ...");
-		Connection connection = null;
+	public static Connection openConnection() {
 		try {
-			connection = DriverManager.getConnection(url, user, password);
-			System.out.println("Successfully connected to PostgreSQL server!\n");
-			
+			System.out.println("Creating Connection to database");
+			if (connection == null || connection.isClosed()) {
+				connection = DriverManager.getConnection(url, user, pass);
+			}
 		} catch (SQLException e) {
-			System.out.println("Failed connected to PostgreSQL server!\n");
 			e.printStackTrace();
 		}
-		
 		return connection;
+	}
+	
+	public static void closeConnection(){
+		try {
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public boolean checkStudentIdExists(String id) {
 		System.out.println("Checking if student ID:"+id+" exists in database");
 		
-		Connection connection = connect();
 		Statement statement;
 		ResultSet resultSet;
 		boolean idExists = false;
 		
 		try {
+			connection = openConnection();
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(
 					"SELECT COUNT(*) FROM student_record WHERE student_id = \'"+id+"\';"
@@ -57,9 +64,10 @@ public class JDBCPostgreSQLConnect {
 			
 			resultSet.close();
 			statement.close();
-			resultSet.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 		
 		return idExists;
@@ -68,15 +76,15 @@ public class JDBCPostgreSQLConnect {
 	public ArrayList<Students> getStudentRecords() {
 		System.out.println("Getting Student Records ...");
 		
-		Connection connection = connect();
-		ArrayList<Students> studentList = new ArrayList<Students>();
 		Statement statement;
 		ResultSet resultSet;
+		ArrayList<Students> studentList = new ArrayList<Students>();
 		Students students;
 		
 		try {
 			System.out.println("Collecting data from database ... ");
 			
+			connection = openConnection();
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(
 					"SELECT * FROM student_record GROUP BY student_id ORDER BY student_id ASC;"
@@ -99,10 +107,11 @@ public class JDBCPostgreSQLConnect {
 			System.out.println("Successfully migrated data in ArrayList!\n");		
 			resultSet.close();
 			statement.close();
-			connection.close();
 		} catch (SQLException e) {
 			System.out.println("Failed to migrate data in ArrayList ... \n");
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 		
 		return studentList;		
@@ -111,13 +120,13 @@ public class JDBCPostgreSQLConnect {
 	public ArrayList<Students> searchStudentRecord (String id) {
 		System.out.println("Searching for student with id: " + id);
 		
-		Connection connection = connect();
-		ArrayList<Students> studentList = new ArrayList<Students>();
 		Statement statement;
 		ResultSet resultSet;
+		ArrayList<Students> studentList = new ArrayList<Students>();
 		Students students;
 		
 		try {
+			connection = openConnection();
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(
 					"SELECT * FROM student_record WHERE student_id = \'"+id+"\';"
@@ -142,10 +151,11 @@ public class JDBCPostgreSQLConnect {
 			
 			resultSet.close();
 			statement.close();
-			connection.close();
 		} catch (SQLException e) {
 			System.out.println("Failed to search data with an id of " + id+ " ... \n");
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 		
 		return studentList;
@@ -155,10 +165,10 @@ public class JDBCPostgreSQLConnect {
 			String id, String first, String middle, String last, String birth,
 			String gender, String email, String contact
 			) {
-		Connection connection = connect();
 		Statement statement;
 		
 		try {
+			connection = openConnection();
 			statement = connection.createStatement();
 			statement.executeUpdate(
 					"INSERT INTO student_record ("
@@ -176,6 +186,8 @@ public class JDBCPostgreSQLConnect {
 		} catch (SQLException e) {
 			System.out.println("Failed to add student record ... \n");
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 	}
 	
@@ -183,10 +195,10 @@ public class JDBCPostgreSQLConnect {
 			String id, String first, String middle, String last, String birth,
 			String gender, String email, String contact
 			) {
-		Connection connection = connect();
 		Statement statement;
 		
 		try {
+			connection = openConnection();
 			statement = connection.createStatement();
 			statement.executeUpdate(
 					"UPDATE student_record SET "
@@ -207,14 +219,16 @@ public class JDBCPostgreSQLConnect {
 		} catch (SQLException e) {
 			System.out.println("Failed to update student record ... \n");
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 	}
 	
 	public void deleteStudentRecord (String id) {
-		Connection connection = connect();
 		Statement statement;
 		
 		try {
+			connection = openConnection();
 			statement = connection.createStatement();
 			statement.executeUpdate(
 					"DELETE FROM student_record WHERE student_id = \'"+id+"\';"
@@ -228,14 +242,8 @@ public class JDBCPostgreSQLConnect {
 		} catch (SQLException e) {
 			System.out.println("Failed to delete student id record ... \n");
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 	}
-	
-//	public static void main(String[] args) {
-//		JDBCPostgreSQLConnect sqlConnect = new JDBCPostgreSQLConnect();
-////		sqlConnect.editStudentRecord("2020-08760-MN-0", "Anne", "M.", "Explorer", "2021-06-11",
-////				"female", "anne.lariosa@gmail.com", "9063150963");
-//		sqlConnect.checkStudentIdExists("2020-07760-MN-0");
-//	}
-
 }
