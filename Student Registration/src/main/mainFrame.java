@@ -269,13 +269,13 @@ public class mainFrame extends JFrame {
 		lblStudentId.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		tfStudentID = new JTextField();
-		tfStudentID.setBounds(106, 10, 150, 20);
+		tfStudentID.setBounds(106, 10, 128, 20);
 		panel.add(tfStudentID);
 		tfStudentID.setColumns(10);
 		lblStudentId.setLabelFor(tfStudentID);
 		
 		JButton btnDeleteStudent = new JButton();
-		btnDeleteStudent.setBounds(266, 9, 63, 23);
+		btnDeleteStudent.setBounds(244, 9, 85, 23);
 		panel.add(btnDeleteStudent);
 		btnDeleteStudent.setText("delete");
 		btnDeleteStudent.setIcon(null);
@@ -416,10 +416,27 @@ public class mainFrame extends JFrame {
 				tfLastName.setText(model.getValueAt(selectedRowIndex, 3).toString());
 				tfEmail.setText(model.getValueAt(selectedRowIndex, 6).toString());
 				tfContactNumber.setText(model.getValueAt(selectedRowIndex, 7).toString());
-				if(model.getValueAt(selectedRowIndex, 5).toString() == "Female")
+				cbYear.setSelectedItem(model.getValueAt(selectedRowIndex, 4).toString().substring(0,4));
+				cbMonth.setSelectedItem(dateOfBirth.extractMonth(model.getValueAt(selectedRowIndex, 4).toString().substring(5,7)));
+				
+//				if(model.getValueAt(selectedRowIndex, 4).toString().substring(5,7).charAt(0) == '0')
+//					cbMonth.setSelectedItem(model.getValueAt(selectedRowIndex, 4).toString().substring(6,7));
+//				else 
+//					cbMonth.setSelectedItem(model.getValueAt(selectedRowIndex, 4).toString().substring(5,7));
+				if(model.getValueAt(selectedRowIndex, 4).toString().substring(8).charAt(0) == '0')
+					cbDay.setSelectedItem(model.getValueAt(selectedRowIndex, 4).toString().substring(9));
+				else
+					cbDay.setSelectedItem(model.getValueAt(selectedRowIndex, 4).toString().substring(8));
+//				System.out.println(model.getValueAt(selectedRowIndex, 4).toString().substring(6,7));
+//				System.out.println(model.getValueAt(selectedRowIndex, 4).toString().substring(5,7).charAt(0) == '0');
+//				System.out.println(model.getValueAt(selectedRowIndex, 4).toString().substring(8).charAt(0) == '0');
+				
+				if(model.getValueAt(selectedRowIndex, 5).toString().equals("Female"))
 					rdbtnFemale.doClick();
+//					System.out.println("female");
 				else
 					rdbtnMale.doClick();
+//					System.out.println("male");
 			}
 		});
 		
