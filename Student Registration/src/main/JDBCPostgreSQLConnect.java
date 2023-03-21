@@ -10,33 +10,39 @@ import java.util.ArrayList;
 /*
  * take off white spaces at each end of strings and capitalize names
  * fix search results when searching for key words
+ * how to datasource
  */
 
 public class JDBCPostgreSQLConnect {
-	
-	private static final String url = "jdbc:postgresql://localhost/postgres";
+	private static final String url = "jdbc:postgresql://localhost:5432/postgres";
 	private static final String user = "postgres";
 	private static final String pass = "893248";
+	
 	private static Connection connection;
 	
 	public static Connection openConnection() {
 		try {
-			System.out.println("Creating Connection to database");
+			System.out.println("Creating Connection to database ...");
 			if (connection == null || connection.isClosed()) {
 				connection = DriverManager.getConnection(url, user, pass);
 			}
 		} catch (SQLException e) {
+			System.out.println("Connection failed ... \n");
 			e.printStackTrace();
 		}
+		System.out.println("Connnection successful!\n");
 		return connection;
 	}
 	
 	public static void closeConnection(){
 		try {
+			System.out.println("Closing connection ...");
 			if (connection != null && !connection.isClosed()) {
 				connection.close();
+				System.out.println("Connection closed!\n");
 			}
 		} catch (SQLException e) {
+			System.out.println("Connection failed to close ... \n");
 			e.printStackTrace();
 		}
 	}
@@ -82,9 +88,9 @@ public class JDBCPostgreSQLConnect {
 		Students students;
 		
 		try {
-			System.out.println("Collecting data from database ... ");
-			
 			connection = openConnection();
+		
+			System.out.println("Collecting data from database ... ");
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(
 					"SELECT * FROM student_record GROUP BY student_id ORDER BY student_id ASC;"
@@ -129,7 +135,7 @@ public class JDBCPostgreSQLConnect {
 			connection = openConnection();
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(
-					"SELECT * FROM student_record WHERE student_id = \'"+id+"\';"
+					"SELECT * FROM student_record WHERE student_id ILIKE \'%"+id+"%\' ORDER BY student_id ASC;"
 					);
 			System.out.println(id);
 			

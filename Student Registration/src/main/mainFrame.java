@@ -507,25 +507,29 @@ public class mainFrame extends JFrame {
 				) {
 					System.out.println("Some text fields are unfilled");
 				} else {
-					sqlConnect.editStudentRecord(
-							tfStudentID.getText(),
-							tfFirstName.getText(),
-							tfMiddleName.getText(),
-							tfLastName.getText(),
-							dateOfBirth.getDOA(
-									cbYear.getSelectedItem(), 
-									cbMonth.getSelectedItem(), 
-									cbDay.getSelectedItem()
-									),
-							Gender.getGender(
-									rdbtnMale, 
-									rdbtnFemale
-									),
-							tfEmail.getText(),
-							tfContactNumber.getText()
-							);
-					JOptionPane.showMessageDialog(contentPane, "Successfully edited student record("+tfStudentID.getText()+")");
-					btnShowAll.doClick();
+					if(!sqlConnect.checkStudentIdExists(tfStudentID.getText())) {
+						JOptionPane.showMessageDialog(contentPane, "Student ID does not exist in the database!");
+					} else {
+						sqlConnect.editStudentRecord(
+								tfStudentID.getText(),
+								tfFirstName.getText(),
+								tfMiddleName.getText(),
+								tfLastName.getText(),
+								dateOfBirth.getDOA(
+										cbYear.getSelectedItem(), 
+										cbMonth.getSelectedItem(), 
+										cbDay.getSelectedItem()
+										),
+								Gender.getGender(
+										rdbtnMale, 
+										rdbtnFemale
+										),
+								tfEmail.getText(),
+								tfContactNumber.getText()
+								);
+						JOptionPane.showMessageDialog(contentPane, "Successfully edited student record("+tfStudentID.getText()+")");
+						btnShowAll.doClick();
+					}
 				}
 			}
 		});
@@ -534,9 +538,14 @@ public class mainFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sqlConnect.deleteStudentRecord(tfStudentID.getText());
-				JOptionPane.showMessageDialog(contentPane, "Successfully deleted student record("+tfStudentID.getText()+")");
-				btnShowAll.doClick();
+				
+				if(!sqlConnect.checkStudentIdExists(tfStudentID.getText())) {
+					JOptionPane.showMessageDialog(contentPane, "Student ID does not exist in the database!");
+				} else {
+					sqlConnect.deleteStudentRecord(tfStudentID.getText());
+					JOptionPane.showMessageDialog(contentPane, "Successfully deleted student record("+tfStudentID.getText()+")");
+					btnShowAll.doClick();
+				}
 			}
 			
 		});

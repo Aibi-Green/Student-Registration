@@ -7,7 +7,7 @@ import javax.swing.JTextField;
 public class Utilities {
 	public static void clearTextFields(
 			JTextField id, JTextField first, JTextField middle, JTextField last, 
-			JComboBox year, JComboBox month, JComboBox day,
+			JComboBox<String> year, JComboBox<String> month, JComboBox<String> day,
 			JRadioButton male, 
 			JTextField email, JTextField contact) {
 		id.setText("");

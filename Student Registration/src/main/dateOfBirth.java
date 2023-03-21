@@ -6,20 +6,8 @@ import javax.swing.JComboBox;
 
 public class dateOfBirth {
 	
-	private static final String[] months = {
-			"January",
-			"February",
-			"March",
-			"April",
-			"May", 
-			"June", 
-			"July", 
-			"August", 
-			"September", 
-			"October", 
-			"November", 
-			"December"
-		};
+	private static final String[] months = {"January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"};
 	
 	public static void setMonths(JComboBox<String> comboBox) {
 		comboBox.addItem("---");
@@ -44,64 +32,45 @@ public class dateOfBirth {
 	
 	public static void setDays(JComboBox<String> comboBox, Object selectedMonth, Object selectedYear) {
 		comboBox.removeAllItems();
-		if(selectedMonth == "February") {			
-			if(isLeapYear(selectedYear)) {
-				for (int i = 0; i < 29; i++) {
+
+		switch (selectedMonth.toString()) {
+			case "February":
+				int daysInFebruary = isLeapYear(selectedYear) ? 29 : 28;
+				for (int i = 1; i <= daysInFebruary; i++) {
+		            comboBox.addItem(Integer.toString(i));
+		        }
+		        break;
+			case "January":
+			case "March":
+			case "May":
+			case "July":
+			case "August":
+			case "October":
+			case "December":
+				for (int i = 0; i < 31; i++) {
+					comboBox.addItem(Integer.toString(i+1));
+				}
+				break;
+			case "April":
+			case "June":
+			case "September":
+			case "November":
+				for (int i = 0; i < 30; i++) {
 					comboBox.addItem(""+(i+1));
 				}
-			} else {
-				for (int i = 0; i < 28; i++) {
-					comboBox.addItem(""+(i+1));
-				}
-			}
-		} else if (
-				selectedMonth == "January" || 
-				selectedMonth == "March" ||
-				selectedMonth == "May" ||
-				selectedMonth == "July" ||
-				selectedMonth == "August" ||
-				selectedMonth == "October" ||
-				selectedMonth == "December"
-		) {
-			for (int i = 0; i < 31; i++) {
-				comboBox.addItem(""+(i+1));
-			}
-		} else if (selectedMonth != "---") {
-			for (int i = 0; i < 30; i++) {
-				comboBox.addItem(""+(i+1));
-			}
-		} else {
-			comboBox.addItem("---");
+				break;
+			default:
+				comboBox.addItem("---");
 		}
 	}
 	
 	public static String extractMonth(String monthNum) {
-		switch (monthNum) {
-			case "01":
-				return "January";
-			case "02":
-				return "February";
-			case "03":
-				return "March";
-			case "04":
-				return "April";
-			case "05":
-				return "May";
-			case "06":
-				return "June";
-			case "07":
-				return "July";
-			case "08":
-				return "August";
-			case "09":
-				return "October";
-			case "10":
-				return "November";
-			case "11":
-				return "December";
-			default:
-				return "None";
-		}
+	    int index = Integer.parseInt(monthNum)-1;
+	    if (index >= 0 && index <= 11) {
+	        return months[index];
+	    } else {
+	        return "None";
+	    }
 	}
 	
 	public static String getDOA(Object year, Object month, Object day) {
