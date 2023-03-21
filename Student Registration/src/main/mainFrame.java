@@ -356,6 +356,7 @@ public class mainFrame extends JFrame {
 				}
 				
 				table.setModel(model);
+				System.out.println("Displaying data from database!\n");
 			}
 			
 		});;
@@ -364,6 +365,7 @@ public class mainFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				ArrayList<Students> getStudentRecords = sqlConnect.searchStudentRecord(tfSearch.getText());
 				
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -418,25 +420,16 @@ public class mainFrame extends JFrame {
 				tfContactNumber.setText(model.getValueAt(selectedRowIndex, 7).toString());
 				cbYear.setSelectedItem(model.getValueAt(selectedRowIndex, 4).toString().substring(0,4));
 				cbMonth.setSelectedItem(dateOfBirth.extractMonth(model.getValueAt(selectedRowIndex, 4).toString().substring(5,7)));
-				
-//				if(model.getValueAt(selectedRowIndex, 4).toString().substring(5,7).charAt(0) == '0')
-//					cbMonth.setSelectedItem(model.getValueAt(selectedRowIndex, 4).toString().substring(6,7));
-//				else 
-//					cbMonth.setSelectedItem(model.getValueAt(selectedRowIndex, 4).toString().substring(5,7));
+
 				if(model.getValueAt(selectedRowIndex, 4).toString().substring(8).charAt(0) == '0')
 					cbDay.setSelectedItem(model.getValueAt(selectedRowIndex, 4).toString().substring(9));
 				else
 					cbDay.setSelectedItem(model.getValueAt(selectedRowIndex, 4).toString().substring(8));
-//				System.out.println(model.getValueAt(selectedRowIndex, 4).toString().substring(6,7));
-//				System.out.println(model.getValueAt(selectedRowIndex, 4).toString().substring(5,7).charAt(0) == '0');
-//				System.out.println(model.getValueAt(selectedRowIndex, 4).toString().substring(8).charAt(0) == '0');
 				
 				if(model.getValueAt(selectedRowIndex, 5).toString().equals("Female"))
 					rdbtnFemale.doClick();
-//					System.out.println("female");
 				else
 					rdbtnMale.doClick();
-//					System.out.println("male");
 			}
 		});
 		
@@ -458,20 +451,85 @@ public class mainFrame extends JFrame {
 				) {
 					System.out.println("Some text fields are unfilled");
 				} else {
-					sqlConnect.addStudentRecord(
+					if(sqlConnect.checkStudentIdExists(tfStudentID.getText())) {
+						JOptionPane.showMessageDialog(contentPane, "Student ID already exists in the database!");
+					} else {
+						sqlConnect.addStudentRecord(
+								tfStudentID.getText(),
+								tfFirstName.getText(),
+								tfMiddleName.getText(),
+								tfLastName.getText(),
+								dateOfBirth.getDOA(
+										cbYear.getSelectedItem(), 
+										cbMonth.getSelectedItem(), 
+										cbDay.getSelectedItem()
+										),
+								Gender.getGender(
+										rdbtnMale, 
+										rdbtnFemale
+										),
+								tfEmail.getText(),
+								tfContactNumber.getText()
+								);
+						
+						JOptionPane.showMessageDialog(contentPane, "Successfully added student to record!");
+						btnShowAll.doClick();
+					}
+					
+				}
+			}
+			
+		});
+		
+		btnEditStudent.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(
+						Invalids.findUnfilledTextFields(
+								tfStudentID, tfFirstName,
+								tfLastName, tfContactNumber) ||
+						Invalids.findUncheckedRadioButtons(
+								rdbtnMale,
+								rdbtnFemale) ||
+						Invalids.findUnselectedComboBox(
+								cbYear.getSelectedItem(),
+								cbMonth.getSelectedItem(), 
+								cbDay.getSelectedItem())
+				) {
+					System.out.println("Some text fields are unfilled");
+				} else {
+					sqlConnect.editStudentRecord(
 							tfStudentID.getText(),
 							tfFirstName.getText(),
 							tfMiddleName.getText(),
 							tfLastName.getText(),
-							dateOfBirth.getDOA(cbYear.getSelectedItem(), cbMonth.getSelectedItem(), cbDay.getSelectedItem()),
-							Gender.getGender(rdbtnMale, rdbtnFemale),
+							dateOfBirth.getDOA(
+									cbYear.getSelectedItem(), 
+									cbMonth.getSelectedItem(), 
+									cbDay.getSelectedItem()
+									),
+							Gender.getGender(
+									rdbtnMale, 
+									rdbtnFemale
+									),
 							tfEmail.getText(),
 							tfContactNumber.getText()
 							);
-					
-					JOptionPane.showMessageDialog(contentPane, "Successfully added student to record!");
+					JOptionPane.showMessageDialog(contentPane, "Successfully edited student record("+tfStudentID.getText()+")");
+					Utilities.clearTextFields(
+							tfStudentID, 
+							tfFirstName, 
+							tfMiddleName, 
+							tfLastName, 
+							cbYear, cbMonth, cbDay, 
+							rdbtnMale, 
+							tfEmail, 
+							tfContactNumber);
 					btnShowAll.doClick();
 				}
+				
+				
 			}
 			
 		});
