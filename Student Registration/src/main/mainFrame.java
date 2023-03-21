@@ -32,15 +32,19 @@ import javax.swing.ImageIcon;
 
 public class mainFrame extends JFrame {
 
-	private JPanel contentPane;
-	private JTextField tfFirstName;
-	private JTextField tfLastName;
-	private JTextField tfMiddleName;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JTextField tfEmail;
-	private JTextField tfContactNumber;
-	private JTable table;
-	private JTextField tfSearch;
+	private JPanel
+		contentPane;
+	private JTextField 
+		tfFirstName, 
+		tfLastName, 
+		tfMiddleName, 
+		tfEmail, 
+		tfContactNumber, 
+		tfSearch;
+	private final ButtonGroup 
+		buttonGroup = new ButtonGroup();
+	private JTable 
+		table;
 	
 	private Font titleStyle = new Font("The Brittany Sans", Font.BOLD, 20);
 	private Font headingStyle = new Font("Tahoma", Font.BOLD, 14);
