@@ -1,5 +1,7 @@
 # Student-Registration
- Made with java, postgreSQL, and windowbuilder
+A mini simple database project made in Eclipse.
+Implemented with Java, postgreSQL, and eclipse extension called windowbuilder.
 
-bin pic -> <a href="https://www.flaticon.com/free-icons/delete" title="delete icons">Delete icons created by Freepik - Flaticon</a>
-https://www.flaticon.com/search?type=icon&word=garbage
+Improvements in the future:
+How can I implement this using datasource import instead of drivermanager?
+Improve to a better and adaptable GUI.
